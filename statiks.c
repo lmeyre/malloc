@@ -1,8 +1,13 @@
-#include "includes.h"
+#include "malloc.h"
 
 t_heap* first_heap()
 {
-	static t_heap* first = NULL;
+	return (*first_origin());
+}
 
-	return (first);
+t_heap **first_origin()
+{
+	static t_heap *origin = NULL;
+
+	return (&origin);
 }

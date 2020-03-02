@@ -1,4 +1,4 @@
-#include "includes.h"
+#include "malloc.h"
 
 
 void	*search_free_block(size_t size)
@@ -35,24 +35,26 @@ void *search_free_heap(size_t size)
 		}
 		heap = heap->next;
 	}
+	return NULL;
 }
 
 //Quand on free un block, il existe toujours mais il est dispo, si on doit malloc un ptr
 //et qu'on trouve un de ces blocks free qui a une taille sup ou egal au ptr size
 // on file cet endroit pour recycler
 
-void* mallocX(size_t size)
+void* malloc(size_t size)
 {
 	void* ptr;
 	
 	ptr = NULL;
 	if (size <= 0)
 		return NULL;
-	if (size <= SMALL_BLOCK_SIZE)
+	if (size <= (size_t)SMALL_BLOCK_SIZE)
 		ptr = search_free_block(size);//block free
 	if (ptr == NULL)
 		ptr = search_free_heap(size);//heap with size to add more block
 	if (ptr == NULL)
 		ptr = new_heap(size);//new heap
+	printf("HERE\n");
 	return ptr;
 }

@@ -13,11 +13,7 @@ void	*next_block_addr(t_heap *heap)
 
 void	prepare_heap(t_heap* heap, size_t size)
 {
-	
-    printf("hreX\n");
 	heap->total_size = size;
-	printf("%zu", heap->total_size);
-    printf("hre\n");
 	heap->type = return_type(heap->total_size);
 	heap->free_size = heap->total_size;
 	heap->next = NULL;
@@ -32,7 +28,11 @@ t_heap	*create_heap(size_t size)
 	heap_chain = first_heap(0);
 	while (heap_chain && heap_chain->next)
 		heap_chain = heap_chain->next;
-	if ((new_heap = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, -1, 0)) == NULL)//si soucis essayer SHARED
+		//addr = mmap(NULL, length + offset - pa_offset, PROT_READ,
+                //MAP_PRIVATE, fd, pa_offset);
+	//if ((new_heap =mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE, -1, 0)) == NULL)//si soucis essayer SHARED
+	//Pnser quer pour les tiny small on verify la place a chaque fois mais le large il faut malloc pour le malloc + p meta et b meta
+	if ((new_heap = mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == NULL)
 		return NULL;
 	if (heap_chain)
 		heap_chain->next = new_heap;
@@ -53,7 +53,7 @@ t_heap	*create_heap(size_t size)
 //When we create a new heap, we must also create a block for the current malloc and return its pointer
 void* new_heap(size_t size)
 {
-	t_heap *heap;
+	t_heap *heap = NULL;
 
 	if ((heap = create_heap(size)) == NULL)
 		return NULL;

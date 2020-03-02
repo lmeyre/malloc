@@ -2,7 +2,9 @@
 
 void init_block(t_block *block, size_t size)
 {
+    printf("Ici\n");
     block->freed = 0;
+    printf("Ici\n");
     block->data_size = size;
     block->next = NULL;
 }

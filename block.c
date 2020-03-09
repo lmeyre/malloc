@@ -2,31 +2,63 @@
 
 void init_block(t_block *block, size_t size)
 {
-    printf("Ici\n");
     block->freed = 0;
-    printf("Ici\n");
     block->data_size = size;
     block->next = NULL;
+    //printf("next block after creation %p\n", block->next);
 }
-//attention on cree pas nos block nimporte ou, on doit caster une adresse en pointeur sur block, 
-//ptet pareil pour les heap ?
+
+
+void    add_block_heap(t_heap *heap, t_block *new_block)
+{
+	t_block		*ptr;
+
+	ptr = heap->blocks;
+    
+        printf("la %p\n", ptr);
+	if (!ptr)
+    {
+        
+        printf("la\n");
+		heap->blocks = new_block;
+        printf("Added block but block is at %p and it is refered by %p\n", new_block, heap->blocks);
+    }
+	else
+	{
+        
+        printf("la\n");
+		while (ptr->next)
+            ptr = ptr->next;
+        ptr->next = new_block;
+        printf("Added block but block is at %p and it is refered by %p\n", new_block, ptr->next);
+	}
+	heap->free_size -= B_META_SIZE + new_block->data_size;
+}
 
 t_block	*create_block(t_heap *heap, size_t size, void *addr)
 {
 	t_block *block;
-	t_block *newBlock;
-
+	t_block *new_block;
+    
     block = heap->blocks;
-    newBlock = (t_block*)addr;
+    new_block = (t_block*)addr;
 	while (block && block->next)
 		block = block->next;
-    init_block(block, size);
-    if (block == NULL)
-        heap->blocks = newBlock;
-    else
-        block->next = newBlock;
-    heap->free_size -= size + B_META_SIZE;
+    
+    if (heap->blocks == NULL)
+        printf("NULLL\n");
+    printf("first block heap adress = %p and curr block = %p and first block from curr heap = %p\n", first_heap()->blocks, new_block, heap->blocks);
+    
+    //init_block(new_block, size);
+    
+    printf("eap block = %p\n", heap->blocks);
+    add_block_heap(heap, new_block);
+    init_block(new_block, size);
     if(heap->free_size < 0)
         printf("PROBLEM");
-    return (newBlock);
+    printf("curr block %p and space addr = %p\n", new_block, addr);
+    printf("curr heap = %p and first page heap = %p\n", heap, first_heap());
+    printf("first block heap adress = %p and curr block = %p and first block from curr heap = %p\n", first_heap()->blocks, new_block, heap->blocks);
+	//printf("is it free  %d\n", first_heap()->blocks->freed);
+    return (new_block);
 }

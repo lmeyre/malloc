@@ -58,5 +58,8 @@ void* new_heap(size_t size)
 	if ((heap = create_heap(size)) == NULL)
 		return NULL;
 	prepare_heap(heap, size);
-	return (create_block(heap, size, heap + 1));
+	t_block *block = create_block(heap, size, ((void*)((char*)heap + sizeof(t_heap) + 1)));//((void*)heap + 1));
+	printf("end of heap, first block = %p\n", first_heap()->blocks);
+	printf("is it free  %d\n", first_heap()->blocks->freed);
+	return (block);
 }

@@ -19,6 +19,11 @@ int main(void)
     // int spaceLeft = heapSize / realsize;
     // printf("meta = %d\n", bmeta);
     // printf("place left for = %d\n", spaceLeft);
-    (void)malloc(55);
+    printf("Tiny = %d, Small = %d\n", TINY_HEAP_ALLOCATION_SIZE, SMALL_HEAP_ALLOCATION_SIZE);
+    (void)malloc(500);
+    printf("Malloc n2\n");
+    (void)malloc(500);
+    printf("Malloc n3\n");
+    (void)malloc(500);
     return 0;
 }

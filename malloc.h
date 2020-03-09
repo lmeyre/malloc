@@ -50,7 +50,7 @@ typedef struct s_heap
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
 #define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
-# define P_META_SIZE			sizeof(t_page)
+# define P_META_SIZE			sizeof(t_heap)
 # define B_META_SIZE			sizeof(t_block)
 
 

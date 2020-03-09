@@ -55,11 +55,19 @@ void* new_heap(size_t size)
 {
 	t_heap *heap = NULL;
 
-	if ((heap = create_heap(size)) == NULL)
+	printf("No avalaible heap, creating new one\n");
+	size_t heap_size;
+	if (size <= (size_t)TINY_BLOCK_SIZE)
+		heap_size = TINY_HEAP_ALLOCATION_SIZE;
+	else if (size <= (size_t)SMALL_BLOCK_SIZE)
+		heap_size = SMALL_HEAP_ALLOCATION_SIZE;
+	else
+		heap_size = size + P_META_SIZE + B_META_SIZE;//pas sur, ptet la meta du block aussi ? ou alors on prevoit trop
+	if ((heap = create_heap(heap_size)) == NULL)
 		return NULL;
 	prepare_heap(heap, size);
 	t_block *block = create_block(heap, size, ((void*)((char*)heap + sizeof(t_heap) + 1)));//((void*)heap + 1));
-	printf("end of heap, first block = %p\n", first_heap()->blocks);
-	printf("is it free  %d\n", first_heap()->blocks->freed);
+	// printf("end of heap, first block = %p\n", first_heap()->blocks);
+	// printf("is it free  %d\n", first_heap()->blocks->freed);
 	return (block);
 }

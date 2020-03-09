@@ -15,18 +15,13 @@ void    add_block_heap(t_heap *heap, t_block *new_block)
 
 	ptr = heap->blocks;
     
-        printf("la %p\n", ptr);
 	if (!ptr)
     {
-        
-        printf("la\n");
 		heap->blocks = new_block;
         printf("Added block but block is at %p and it is refered by %p\n", new_block, heap->blocks);
     }
 	else
 	{
-        
-        printf("la\n");
 		while (ptr->next)
             ptr = ptr->next;
         ptr->next = new_block;
@@ -45,20 +40,20 @@ t_block	*create_block(t_heap *heap, size_t size, void *addr)
 	while (block && block->next)
 		block = block->next;
     
-    if (heap->blocks == NULL)
-        printf("NULLL\n");
-    printf("first block heap adress = %p and curr block = %p and first block from curr heap = %p\n", first_heap()->blocks, new_block, heap->blocks);
+    // if (heap->blocks == NULL)
+    //     printf("NULLL\n");
+    //printf("first block heap adress = %p and curr block = %p and first block from curr heap = %p\n", first_heap()->blocks, new_block, heap->blocks);
     
     //init_block(new_block, size);
     
-    printf("eap block = %p\n", heap->blocks);
+    // printf("eap block = %p\n", heap->blocks);
     add_block_heap(heap, new_block);
     init_block(new_block, size);
     if(heap->free_size < 0)
         printf("PROBLEM");
-    printf("curr block %p and space addr = %p\n", new_block, addr);
-    printf("curr heap = %p and first page heap = %p\n", heap, first_heap());
-    printf("first block heap adress = %p and curr block = %p and first block from curr heap = %p\n", first_heap()->blocks, new_block, heap->blocks);
+    // printf("curr block %p and space addr = %p\n", new_block, addr);
+    // printf("curr heap = %p and first page heap = %p\n", heap, first_heap());
+    // printf("first block heap adress = %p and curr block = %p and first block from curr heap = %p\n", first_heap()->blocks, new_block, heap->blocks);
 	//printf("is it free  %d\n", first_heap()->blocks->freed);
     return (new_block);
 }

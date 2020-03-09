@@ -5,6 +5,7 @@ void	*search_free_block(size_t size)
 {
 	t_heap* heap;
 	
+	printf("Looking for a free block in heap\n");
 	heap = first_heap();
 	while (heap)
 	{
@@ -12,12 +13,12 @@ void	*search_free_block(size_t size)
 		if (heap->type == return_type(size))
 		{
 			printf("valid heap\n");
+			if (heap->blocks == NULL)
+				printf("First block of the heap is null\n");
 			t_block* block = heap->blocks;
 			while (block)
 			{
-				printf("%p\n", block);
 				printf("found a block = %p, its free ? = %d\n", block, block->freed);
-    			printf("next = %p\n", block->next);
 				if (block->freed && block->data_size <= size)
 				{
 					printf("Found heap with a block empty\n");
@@ -35,13 +36,20 @@ void *search_free_heap(size_t size)
 {
 	t_heap* heap;
 	
+	printf("Looking for a room in a heap\n");
 	heap = first_heap();
 	while (heap)
 	{
-		if (heap->type == return_type(size) && heap->total_size > (size + B_META_SIZE))
+		printf("found heap\n");
+		if (heap->type == return_type(size))
 		{
-			printf("Found heap with space\n");
-			return create_block(heap, size, next_block_addr(heap));
+			printf("valid heap\n");
+			printf("total = %zu and size = %zu and meta = %zu\n", heap->total_size, size, B_META_SIZE);
+			if (heap->total_size > (size + B_META_SIZE))
+			{
+				printf("Found heap with space\n");
+				return create_block(heap, size, next_block_addr(heap));
+			}
 		}
 		heap = heap->next;
 	}
@@ -66,7 +74,7 @@ void* malloc(size_t size)
 	if (ptr == NULL)
 		ptr = new_heap(size);//new heap, return first block
 	
-    printf("Fin %p\n", ((t_block*)ptr)->next);
+    //printf("Fin %p\n", ((t_block*)ptr)->next);
 	//printf();
 	return (ptr + B_META_SIZE);
 }

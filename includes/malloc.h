@@ -2,9 +2,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-//# include <sys/mman.h>
 # include <stdio.h>
-//# include <unistd.h>
 # include <string.h>
 # include <sys/mman.h>
 //#include <windows.h> // to remove  

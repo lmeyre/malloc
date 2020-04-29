@@ -2,9 +2,9 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-FLAG = -Wall -Werror -Wextra
+COMPILER = clang #GCC
 
-VPATH = $(SRCS_DIR)
+FLAG = #-Wall -Werror -Wextra
 
 NAME = libft_malloc_$(HOSTTYPE).so
 
@@ -14,26 +14,42 @@ INCLUDESDIR = includes
 
 HEADER = malloc.h
 
-SRCDIR = srcs
+SRCSDIR = srcs/
 
-SRC = *.c
+SRCS_NAME =	malloc.c \
+			heap.c \
+			block.c \
+			utils.c \
+			statiks.c \
+			main.c
 
-BIN = $(SRC:.c=.o)
+SRCS = $(addprefix $(SRCSDIR), $(SRCS_NAME))
+
+BINDIR = objs/
+
+BIN_NAME = $(SRCS_NAME:.c=.o)
+
+BIN = $(addprefix $(BINDIR), $(BIN_NAME))
 
 .PHONY: all clean fclean re
 
 all : $(NAME)
 
-$(NAME) : $(MAKE) $(BIN) $(HEADER)
+$(NAME) : $(BIN)
+	@echo "Compiling $(NAME)"
+	@ln -sf $(NAME) libft_malloc.so
 	@ar rc $(NAME) $(BIN)
 
-%.o: %.c $(HEADER)
-	@gcc $(FLAG) -o $@ -c $< -I $(INCLUDESDIR)
+$(BINDIR)%.o: $(SRCSDIR)%.c
+	@$(COMPILER) $(FLAG) -I INCLUDESDIR -o $@ -c $<
 
 clean:
+	@echo "Cleaning Bins"
 	@/bin/rm -rf $(BIN)
 
 fclean: clean
+	@echo "Full Cleaning"
 	@/bin/rm -rf $(NAME)
+	@rm -rf libft_malloc.so
 
 re: fclean all

@@ -21,7 +21,7 @@ SRCS_NAME =	malloc.c \
 			block.c \
 			utils.c \
 			statiks.c \
-			main.c
+			#main.c
 
 SRCS = $(addprefix $(SRCSDIR), $(SRCS_NAME))
 

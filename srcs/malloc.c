@@ -64,6 +64,7 @@ void* malloc(size_t size)
 {
 	void* ptr;
 	
+	printf("Starting malloc\n");
 	ptr = NULL;
 	if (size <= 0)
 		return NULL;

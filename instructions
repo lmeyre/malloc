@@ -1,0 +1,1 @@
+faire ./run.sh clang librairie + main a compiler,  bien quand on compile le .aout et pas qunad on compile la lib avec le makefile la premiere fois, c'est pour que le a.out soit config pour utiliser notre malloc

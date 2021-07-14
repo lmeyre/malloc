@@ -49,7 +49,7 @@ visi: $(PRINTF) $(BIN) $(HEADER)
 	ranlib $(NAME)
 
 %.o: %.c $(HEADER)
-	@gcc -o $@ -c $< -I $(INCLUDES) $(FLAG)
+	@clang -o $@ -c $< -I $(INCLUDES) $(FLAG)
 
 clean:
 	@rm -rf $(BIN)

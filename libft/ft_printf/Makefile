@@ -22,7 +22,7 @@ $(NAME) : $(MAKE) $(BIN) $(HEADER)
 	@ar rc $(NAME) $(BIN)
 
 %.o: %.c $(HEADER)
-	@gcc -o $@ -c $< -I $(INCLUDESDIR)
+	@clang -o $@ -c $< -I $(INCLUDESDIR)
 
 clean:
 	@/bin/rm -rf $(BIN)

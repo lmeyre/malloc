@@ -5,23 +5,23 @@ void	*search_free_block(size_t size)
 {
 	t_heap* heap;
 	
-	printf("Looking for a free block in heap\n");
+	ft_putstr("Looking for a free block in heap\n");
 	heap = first_heap();
 	while (heap)
 	{
-		printf("found heap\n");
+		ft_putstr("found heap\n");
 		if (heap->type == return_type(size))
 		{
-			printf("valid heap\n");
+			ft_putstr("valid heap\n");
 			if (heap->blocks == NULL)
-				printf("First block of the heap is null\n");
+				ft_putstr("First block of the heap is null\n");
 			t_block* block = heap->blocks;
 			while (block)
 			{
-				printf("found a block = %p, its free ? = %d\n", block, block->freed);
+				//printf("found a block = %p, its free ? = %d\n", block, block->freed);
 				if (block->freed && block->data_size <= size)
 				{
-					printf("Found heap with a block empty\n");
+					ft_putstr("Found heap with a block empty\n");
 					return (block);
 				}
 				block = block->next;
@@ -32,50 +32,61 @@ void	*search_free_block(size_t size)
 	return NULL;
 }
 
-void *search_free_heap(size_t size)
+void *search_free_heap(size_t size, t_data_type type)
 {
 	t_heap* heap;
+	//extern t_heap *g_heap_origin;
+	size_t required_free_size = size + B_META_SIZE;
 	
-	printf("Looking for a room in a heap\n");
+	ft_putstr("Looking for a room in a heap\n");
+	//heap = g_heap_origin;
 	heap = first_heap();
 	while (heap)
 	{
-		printf("found heap\n");
-		if (heap->type == return_type(size))
+		//ft_putstr("found heap\n");
+		//Que se passe il si la heap a 100 de free size en 2 x, genre 50 et 50
+		//Et qu'on cherche a placer un malloc de 75 ?
+		//en fait on doit essayer que quand on free un block, on replace ceux apres colle a ceux d'avant pour pas avoir de trou
+		if (heap->type == type && heap->free_size >= required_free_size)
 		{
-			printf("valid heap\n");
-			printf("total = %zu and size = %zu and meta = %zu\n", heap->total_size, size, B_META_SIZE);
-			if (heap->total_size > (size + B_META_SIZE))
-			{
-				printf("Found heap with space\n");
-				return create_block(heap, size, next_block_addr(heap));
-			}
+			ft_putstr("valid heap\n");
+			return heap;
 		}
 		heap = heap->next;
 	}
-	return NULL;
+	//if no heap found, make a new one
+	if (!(heap = new_heap(size, type)))
+		return NULL;
+	return heap;
 }
 
 //Quand on free un block, il existe toujours mais il est dispo, si on doit malloc un ptr
 //et qu'on trouve un de ces blocks free qui a une taille sup ou egal au ptr size
 // on file cet endroit pour recycler
 
+
 void* malloc(size_t size)
 {
 	void* ptr;
-	
-	printf("Starting malloc\n");
+
+	//return NULL;
+	ft_putstr("Starting malloc");// Useful to know if we use our malloc or real one
+	ft_putnbr(size);
 	ptr = NULL;
 	if (size <= 0)
 		return NULL;
-	if (size <= (size_t)SMALL_BLOCK_SIZE)
-		ptr = search_free_block(size);//block free
-	if (ptr == NULL)
-		ptr = search_free_heap(size);//heap with size to add more block
-	if (ptr == NULL)
-		ptr = new_heap(size);//new heap, return first block
+
+	size = (size + 15) & ~15; // padding necessary maybe ? 
+	//if free block, assign it
+	t_data_type size_type = return_type(size);
+	if ((ptr = search_free_block(size)) != NULL)
+		return ((void*)ptr + B_META_SIZE);
+	//if not, get a heap
+	if (!(ptr = (t_heap*)search_free_heap(size, size_type))) // if no free, will create ad return new one
+		return (NULL);
+	//Assign the block in the heap here
 	
-    //printf("Fin %p\n", ((t_block*)ptr)->next);
-	//printf();
-	return (ptr + B_META_SIZE);
+	ft_putstr("MARK");
+	return create_block(ptr, size);
+	return (ptr + B_META_SIZE);//???
 }

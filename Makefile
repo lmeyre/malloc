@@ -22,6 +22,7 @@ SRCS_NAME =	malloc.c \
 			utils.c \
 			statiks.c \
 			misc.c \
+			free.c \
 			#main.c # pas a compiler, le main sert a test la lib, la on compile la lib
 
 SRCS = $(addprefix $(SRCSDIR), $(SRCS_NAME))

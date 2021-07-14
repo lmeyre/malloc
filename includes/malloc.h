@@ -71,6 +71,7 @@ void* malloc(size_t size);
 void	ft_putnbr(int n);
 void	ft_putstr(char const *s);
 void	ft_bzero(void *s, size_t n);
+void    free(void *ptr);
 
 //void* search_free_block(size_t size);
 

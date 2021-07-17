@@ -12,6 +12,42 @@
 
 #include "../includes/malloc.h"
 
+void	clear_heap(t_heap heap)
+{
+	t_heap *prev;
+	t_heap *next;
+
+	next = heap->next;
+	prev = get_prev_heap(heap);
+
+	//Ici c'est plsu simple que les blocks, on a pas a relier les espace vide, ce sont des heaps et pas des  block au sein d'une heap
+	if (prev != NULL)
+		prev->next = next;
+	if (heap == first_heap())
+	{
+		t_heap **ref_first = first_origin();
+		*ref_first = next;
+	}
+	munmap(heap, heap->total_size);
+}
+
+void	clear_heap_end(t_heap *heap, t_block *block)
+{
+	t_block *prev;
+
+	if (block->next == NULL)
+	{
+		prev = get_prev_block(block, heap);
+		if (prev != NULL)
+			prev->next = NULL;
+		heap->free_size += B_META_SIZE + block->data_size;
+		if (block == heap->first_block)
+			heap->first_block = NULL;//We remove the first and last block
+	}
+	else if (block == heap->first_block)
+		heap->first_block = block->next;
+}
+
 //voir si on l'enleve ca fait un peu cramer
 static rlim_t	check_limit(void)
 {
@@ -43,7 +79,7 @@ void	prepare_heap(t_heap* heap, size_t size, t_data_type type)
 	// ft_putnbr(heap_origin->count);
 	// ft_putnbr(heap_origin->next->count);
 
-	heap->blocks = NULL;
+	heap->first_block = NULL;
 	
 	//extern t_heap *g_heap_origin;
 	//heap_chain = g_heap_origin;

@@ -13,7 +13,7 @@
 #include "../includes/malloc.h"
 
 
-void	*search_free_block(size_t size)
+void	*search_free_block(size_t size, t_data_type size_type)
 {
 	t_heap* heap;
 	
@@ -22,16 +22,19 @@ void	*search_free_block(size_t size)
 	while (heap)
 	{
 		ft_putstr("found heap\n");
-		if (heap->type == return_type(size))
+		if (heap->type == size_type)
 		{
 			ft_putstr("valid heap\n");
-			if (heap->blocks == NULL)
+			if (heap->first_block == NULL)
 				ft_putstr("First block of the heap is null\n");
-			t_block* block = heap->blocks;
+			t_block* block = heap->first_block;
 			while (block)
 			{
 				//printf("found a block = %p, its free ? = %d\n", block, block->freed);
-				if (block->freed && block->data_size <= size)
+				//on essai de voir si ya la place pour la data + meta, pour diviser se block en 2 block, dont 1 qui a la meta + pile la size
+				//le seul soucis c'est que dans le cas ou le bloc fait pile la taille qu'on veut,  comme on essai d'en faire un autre, et qu'on prevoit pour la meta (vu qu'on divise)
+				//ca va pas marcher, mais c'est ok
+				if (block->freed == 1 && block->data_size >= B_META_SIZE + size)
 				{
 					ft_putstr("Found heap with a block empty\n");
 					return (block);
@@ -80,6 +83,8 @@ void *search_free_heap(size_t size, t_data_type type)
 void* malloc(size_t size)
 {
 	void* ptr;
+	t_block	*block;
+	t_heap	*heap;
 
 	//return NULL;
 	ft_putstr("Starting malloc");// Useful to know if we use our malloc or real one
@@ -91,14 +96,14 @@ void* malloc(size_t size)
 	size = (size + 15) & ~15; // padding necessary maybe ? 
 	//if free block, assign it
 	t_data_type size_type = return_type(size);
-	if ((ptr = search_free_block(size)) != NULL)
-		return ((void*)ptr + B_META_SIZE);
+	if ((block = search_free_block(size, size_type)) != NULL)
+		return (use_free_block(block, size));
 	//if not, get a heap
-	if (!(ptr = (t_heap*)search_free_heap(size, size_type))) // if no free, will create ad return new one
+	if (!(heap = (t_heap*)search_free_heap(size, size_type))) // if no free, will create ad return new one
 		return (NULL);
 	//Assign the block in the heap here
 	
-	ft_putstr("MARK");
-	return create_block(ptr, size);
-	return (ptr + B_META_SIZE);//???
+	//ft_putstr("MARK");
+	block = create_block(heap, size);
+	return ((void*)block + B_META_SIZE);
 }

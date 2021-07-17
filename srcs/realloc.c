@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmeyre <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,37 +12,15 @@
 
 #include "../includes/malloc.h"
 
-t_data_type return_type(size_t size)
+void*realloc(void *ptr, size_t size)
 {
-    t_data_type type;
+    if (ptr == NULL)
+        return (malloc(size));
+    else if (size == 0)
+    {
+        free(ptr);
+        return (NULL);
+    }
+
     
-    if (size <= (size_t)TINY_BLOCK_SIZE)
-		  type = TINY;
-    else if (size <= (size_t)SMALL_BLOCK_SIZE)
-		  type = SMALL;
-    else
-      type = LARGE;
-    return type;
-}
-
-t_block   *get_prev_block(t_block *block, t_heap *heap)
-{
-    t_block *first = heap->first_block;
-    while (first && first->next)
-    {
-      if(first->next == block)
-        return block;
-    }
-    return NULL;
-}
-
-t_heap   *get_prev_heap(t_heap *heap)
-{
-    t_heap *first = first_heap();
-    while (first && first->next)
-    {
-      if(first->next == heap)
-        return heap;
-    }
-    return NULL;
 }

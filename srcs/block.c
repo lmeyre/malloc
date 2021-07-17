@@ -12,6 +12,26 @@
 
 #include "../includes/malloc.h"
 
+void try_fusion_block(t_block *block, t_heap *heap)
+{
+    t_block prev;
+    t_block next;
+    
+    prev = get_prev_block(block, heap);
+    next = block->next;
+    
+    if (next != NULL && next->free)
+    {
+        block->next = next->next;
+        block->data_size += B_META_SIZE + next->data_size;
+    }
+    if (prev != NULL && prev->free)
+    {
+        prev->next = next;
+        prev->data_size += B_META_SIZE + block->data_size;
+    }
+}
+
 void init_block(t_block *block, size_t size)
 {
     block->freed = 0;
@@ -19,13 +39,12 @@ void init_block(t_block *block, size_t size)
     block->next = NULL;
 }
 
-
 void    add_block_heap(t_heap *heap, t_block *new_block, t_block* last_block)
 {
     if (last_block)
         last_block->next = new_block;
     else
-        heap->blocks = new_block;
+        heap->first_block = new_block;
 	heap->free_size -= B_META_SIZE + new_block->data_size;
 }
 
@@ -36,7 +55,7 @@ t_block	*create_block(t_heap *heap, size_t size)
     
     
 	ft_putstr("Creating new block");
-    last_block = heap->blocks;
+    last_block = heap->first_block;
 	while (last_block && last_block->next)
 		last_block = last_block->next;
     //If no block in heap, we place it at heap start + heap meta data
@@ -57,6 +76,27 @@ t_block	*create_block(t_heap *heap, size_t size)
     //Tester sans ? jteraz fait ca, donc a priori good
     
 	ft_putstr("Finished creating");
-    void *block_data_start = ((void*)(new_block + B_META_SIZE));
     return (new_block);
+}
+
+void    *use_free_block(t_block *block, size_t size)
+{
+    t_block *split;
+
+    ft_putstr("Splited two block, origin size was : ");
+    ft_putnbr(block->data_size)
+    split = (t_block*)((void*)block + B_META_SIZE + size);
+    split->next = block->next;
+    block->next = split;
+    split->data_size = block->data_size - size - B_META_SIZE;
+    block->data_size = size;
+    split->free = 1;
+    block->free = 0;;
+    ft_putstr("Trying to create a new block of size : ");
+    ft_putnbr(size);
+    ft_putstr("So remaining block size is (+meta)");
+    ft_putnbr(split->data_size);
+    ft_putnbr(B_META_SIZE);
+
+    return ((void*)block + B_META_SIZE);
 }

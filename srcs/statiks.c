@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-t_heap *g_heap_origin = NULL;
+t_heap *g_heap_origin = NULL;// a virer ?
 int heapcount = 1; // a virer
 
 //return head (allow modifying inside of it)

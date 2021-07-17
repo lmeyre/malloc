@@ -24,6 +24,8 @@ typedef enum e_data_type
 typedef struct s_block
 {
     //struct s_block* prev;
+//could make a method to return prev block/heap to avoid stocking it and maximise space
+//en parler en corr ? -> a en parler
     struct s_block* next;
     size_t          data_size;
     int             freed;
@@ -31,9 +33,9 @@ typedef struct s_block
 
 typedef struct s_heap
 {
-    //struct s_heap* prev;//check if needed (check every field)
-    struct s_heap* next;
-    t_block*    blocks;
+    //struct s_heap*  prev;//meme comment que pour block prev
+    struct s_heap*  next;
+    t_block*        first_block;// on pourrait l'enlever et acceder au ptr block en allant a heap + heap meta size, si on le fait en parler en correc
     size_t          total_size;
     size_t          free_size;
     t_data_type     type;
@@ -61,17 +63,22 @@ typedef struct s_heap
 # define B_META_SIZE			sizeof(t_block)
 
 
-t_heap* first_heap();
-t_heap **first_origin();
-t_heap* new_heap(size_t size, t_data_type type);
+t_heap*     first_heap();
+t_heap      **first_origin();
+t_heap*     new_heap(size_t size, t_data_type type);
 t_data_type return_type(size_t size);
-t_block	*create_block(t_heap *heap, size_t size);
+t_block	    *create_block(t_heap *heap, size_t size);
+void        *use_free_block(t_block *block, size_t size);
+void        try_fusion_block(t_block *block, t_heap *heap)
+void        clear_heap_end(t_heap *heap, t_block *block)
+void	    clear_heap(t_heap heap)
 //void	*next_block_addr(t_heap *heap);
-void* malloc(size_t size);
-void	ft_putnbr(int n);
-void	ft_putstr(char const *s);
-void	ft_bzero(void *s, size_t n);
-void    free(void *ptr);
+void*       malloc(size_t size);
+void	    ft_putnbr(int n);
+void	    ft_putstr(char const *s);
+void	    ft_bzero(void *s, size_t n);
+void        free(void *ptr);
+void        *realloc(void *ptr, size_t size);
 
 //void* search_free_block(size_t size);
 

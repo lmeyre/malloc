@@ -79,3 +79,32 @@ void	ft_bzero(void *s, size_t n)
 		n--;
 	}
 }
+
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	unsigned char		*pdest;
+	const unsigned char	*psrc;
+	size_t				i;
+
+	if (!dst || !src)
+		return (NULL);
+	i = 0;
+	pdest = dst;
+	psrc = src;
+	if (pdest < psrc)
+	{
+		while (i < len)
+		{
+			pdest[i] = psrc[i];
+			i++;
+		}
+	}
+	else if (pdest > psrc)
+	{
+		while (len--)
+		{
+			pdest[len] = psrc[len];
+		}
+	}
+	return (dst);
+}

@@ -17,16 +17,16 @@ void	*search_free_block(size_t size, t_data_type size_type)
 {
 	t_heap* heap;
 	
-	ft_putstr("Looking for a free block in heap\n");
+	//ft_putstr("Looking for a free block in heap\n");
 	heap = first_heap();
 	while (heap)
 	{
-		ft_putstr("found heap\n");
+		//ft_putstr("found heap\n");
 		if (heap->type == size_type)
 		{
-			ft_putstr("valid heap\n");
-			if (heap->first_block == NULL)
-				ft_putstr("First block of the heap is null\n");
+			// ft_putstr("valid heap\n");
+			// if (heap->first_block == NULL)
+			// 	ft_putstr("First block of the heap is null\n");
 			t_block* block = heap->first_block;
 			while (block)
 			{
@@ -34,9 +34,9 @@ void	*search_free_block(size_t size, t_data_type size_type)
 				//on essai de voir si ya la place pour la data + meta, pour diviser se block en 2 block, dont 1 qui a la meta + pile la size
 				//le seul soucis c'est que dans le cas ou le bloc fait pile la taille qu'on veut,  comme on essai d'en faire un autre, et qu'on prevoit pour la meta (vu qu'on divise)
 				//ca va pas marcher, mais c'est ok
-				if (block->freed == 1 && block->data_size >= B_META_SIZE + size)
+				if (block->free == 1 && block->data_size >= B_META_SIZE + size)
 				{
-					ft_putstr("Found heap with a block empty\n");
+					//ft_putstr("Found heap with a block empty\n");
 					return (block);
 				}
 				block = block->next;
@@ -47,24 +47,23 @@ void	*search_free_block(size_t size, t_data_type size_type)
 	return NULL;
 }
 
-void *search_free_heap(size_t size, t_data_type type)
+void *search_free_heap(size_t size, t_data_type type, int debug)
 {
 	t_heap* heap;
 	//extern t_heap *g_heap_origin;
 	size_t required_free_size = size + B_META_SIZE;
 	
-	ft_putstr("Looking for a room in a heap\n");
+	if (debug == 1)
+		ft_putstr("Looking for a heap to use for the malloc");
+	//ft_putstr("Looking for a room in a heap\n");
 	//heap = g_heap_origin;
 	heap = first_heap();
 	while (heap)
 	{
-		//ft_putstr("found heap\n");
-		//Que se passe il si la heap a 100 de free size en 2 x, genre 50 et 50
-		//Et qu'on cherche a placer un malloc de 75 ?
-		//en fait on doit essayer que quand on free un block, on replace ceux apres colle a ceux d'avant pour pas avoir de trou
 		if (heap->type == type && heap->free_size >= required_free_size)
 		{
-			ft_putstr("valid heap\n");
+			if (debug == 1)
+				ft_putstr("Found a non full heap to use\n");
 			return heap;
 		}
 		heap = heap->next;
@@ -72,6 +71,8 @@ void *search_free_heap(size_t size, t_data_type type)
 	//if no heap found, make a new one
 	if (!(heap = new_heap(size, type)))
 		return NULL;
+	if (debug == 1)
+		ft_putstr("Found no free heap, creating a new one");
 	return heap;
 }
 
@@ -82,28 +83,38 @@ void *search_free_heap(size_t size, t_data_type type)
 
 void* malloc(size_t size)
 {
+	static int debug = 0;
 	void* ptr;
 	t_block	*block;
 	t_heap	*heap;
 
-	//return NULL;
-	ft_putstr("Starting malloc");// Useful to know if we use our malloc or real one
-	ft_putnbr(size);
+	if (debug == 1)
+		ft_putstrn("Starting malloc of type ");// Useful to know if we use our malloc or real one
 	ptr = NULL;
 	if (size <= 0)
 		return NULL;
 
-	size = (size + 15) & ~15; // padding necessary maybe ? 
-	//if free block, assign it
+	size = (size + 15) & ~15;//padding
 	t_data_type size_type = return_type(size);
+	if (debug == 1)
+	{
+		if (size_type == TINY)
+			ft_putstr("TINY");
+		else if (size_type == SMALL)
+			ft_putstr("SMALL");
+		else
+			ft_putstr("LARGE");
+	}
 	if ((block = search_free_block(size, size_type)) != NULL)
+	{
+		if (debug == 1)
+			ft_putstr("Using existing empty block");
 		return (use_free_block(block, size));
+	}
 	//if not, get a heap
-	if (!(heap = (t_heap*)search_free_heap(size, size_type))) // if no free, will create ad return new one
+	if (!(heap = (t_heap*)search_free_heap(size, size_type, debug))) // if no free, will create ad return new one
 		return (NULL);
-	//Assign the block in the heap here
-	
-	//ft_putstr("MARK");
-	block = create_block(heap, size);
+
+	block = create_block(heap, size, debug);
 	return ((void*)block + B_META_SIZE);
 }

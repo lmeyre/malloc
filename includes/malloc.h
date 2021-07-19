@@ -28,7 +28,8 @@ typedef struct s_block
 //en parler en corr ? -> a en parler
     struct s_block* next;
     size_t          data_size;
-    int             freed;
+    int             free;
+    int code;
 } t_block;
 
 typedef struct s_heap
@@ -67,20 +68,28 @@ t_heap*     first_heap();
 t_heap      **first_origin();
 t_heap*     new_heap(size_t size, t_data_type type);
 t_data_type return_type(size_t size);
-t_block	    *create_block(t_heap *heap, size_t size);
+t_block	    *create_block(t_heap *heap, size_t size, int debug);
 void        *use_free_block(t_block *block, size_t size);
 void        find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_block **target_block);
-void        try_fusion_block(t_block *block, t_heap *heap)
-void        clear_heap_end(t_heap *heap, t_block *block)
-void	    clear_heap(t_heap heap)
+void        try_fusion_block(t_block *block, t_heap *heap);
+void        clear_heap_end(t_heap *heap, t_block *block);
+void	    clear_heap(t_heap *heap);
 //void	*next_block_addr(t_heap *heap);
-void*       malloc(size_t size);
+void        *malloc(size_t size);
 void	    ft_putnbr(int n);
+void        ft_putnbrn(int n);
+void        ft_putchar(char c);
 void	    ft_putstr(char const *s);
+void        ft_putstrn(char const *s);
 void        *ft_memmove(void *dst, const void *src, size_t len);
 void	    ft_bzero(void *s, size_t n);
 void        free(void *ptr);
 void        *realloc(void *ptr, size_t size);
+t_block     *get_prev_block(t_block *block, t_heap *heap);
+t_heap      *get_prev_heap(t_heap *heap);
+void        show_alloc_mem(void);
+void        print_memory(uintptr_t value, int base, char *base_str, int len);
+int         get_len_conv(uintptr_t value, int base);
 
 //void* search_free_block(size_t size);
 

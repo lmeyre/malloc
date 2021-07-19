@@ -16,21 +16,27 @@
 void show_heap_list()
 {
     int i = 0;
-    t_heap *heap = g_heap_anchor;
+    t_heap *heap = first_heap();
 
     printf("DEBUG: heap list\n");
 
-    while (heap) {
+    while (heap) 
+    {
+        int bCount = 0;
+        t_block *bl = heap->first_block;;
+        while (bl)
+        {
+            bCount += 1;
+            bl = bl->next;
+        }
         printf(
-            "%d. heap %p, prev: %p, next: %p (count: %zu, group: %d, total size: %zu, free_space: %zu)\n",
+            "%d. heap %p, next: %p (total size: %zu, free_space: %zu), it has %d blocks\n",
             i,
             heap,
-            heap->prev,
             heap->next,
-            heap->block_count,
-            heap->group,
             heap->total_size,
-            heap->free_size);
+            heap->free_size,
+            bCount);
         heap = heap->next;
         i++;
     }

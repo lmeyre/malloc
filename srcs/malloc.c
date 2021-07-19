@@ -63,7 +63,7 @@ void *search_free_heap(size_t size, t_data_type type, int debug)
 		if (heap->type == type && heap->free_size >= required_free_size)
 		{
 			if (debug == 1)
-				ft_putstr("Found a non full heap to use\n");
+				ft_putstr("Found a non full heap to use");
 			return heap;
 		}
 		heap = heap->next;
@@ -83,13 +83,13 @@ void *search_free_heap(size_t size, t_data_type type, int debug)
 
 void* malloc(size_t size)
 {
-	static int debug = 0;
+	static int debug = 1;
 	void* ptr;
 	t_block	*block;
 	t_heap	*heap;
 
 	if (debug == 1)
-		ft_putstrn("Starting malloc of type ");// Useful to know if we use our malloc or real one
+		ft_putstrn("\nStarting malloc of type ");// Useful to know if we use our malloc or real one
 	ptr = NULL;
 	if (size <= 0)
 		return NULL;
@@ -104,6 +104,8 @@ void* malloc(size_t size)
 			ft_putstr("SMALL");
 		else
 			ft_putstr("LARGE");
+		ft_putstrn("Size is ");
+		ft_putnbr(size);
 	}
 	if ((block = search_free_block(size, size_type)) != NULL)
 	{

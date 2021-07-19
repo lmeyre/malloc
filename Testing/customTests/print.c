@@ -18,7 +18,7 @@ void show_heap_list()
     int i = 0;
     t_heap *heap = first_heap();
 
-    printf("DEBUG: heap list\n");
+    printf("DEBUG: heap list\nCareful, this use printf and may trigger a malloc !\n");
 
     while (heap) 
     {

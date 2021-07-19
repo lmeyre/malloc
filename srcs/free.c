@@ -38,13 +38,13 @@ void	find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_block *
 	*target_heap = NULL;
 }
 
-void    empty_block(t_heap *heap, t_block *block, void *ptr)
+t_block    *empty_block(t_heap *heap, t_block *block, void *ptr, int debug)
 {
 	//bzero the ptr and not the block, so we only bzero what was stocked inside and now the meta
 	ft_bzero(ptr, block->data_size);
 	block->free = 1;
 	//if the previous or next is also free, we make a big free block from 2
-	try_fusion_block(block, heap);
+	return (try_fusion_block(block, heap, debug));
 }
 
 void    free(void* ptr)
@@ -55,7 +55,7 @@ void    free(void* ptr)
 	static int debug = 1;
 
 	if (debug == 1)
-		ft_putstr("Starting free");
+		ft_putstr("\nStarting free");
     if (ptr == NULL)
         return ;
     origin = first_heap();
@@ -67,11 +67,9 @@ void    free(void* ptr)
     if (target_block != NULL)
 	{
 		if (debug == 1)
-			ft_putstr("Emptying and fusion of blocks");
-        empty_block(target_heap, target_block, ptr);
-		if (debug == 1)
-			ft_putstr("Clearing heap end");
-		clear_heap_end(target_heap, target_block);
+			ft_putstr("Found it, trying to fusion free blocks");
+        target_block = empty_block(target_heap, target_block, ptr, debug);
+		clear_heap_end(target_heap, target_block, debug);
 		if (target_heap->first_block == NULL)
 		{
 			if (debug == 1)

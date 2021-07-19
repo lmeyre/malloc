@@ -27,20 +27,24 @@ size_t    scan_blocks(t_heap *heap)
     
     while(curr)
     {
-        if (curr->free)
-            continue;
-        block_start = ((void*)curr + B_META_SIZE);
-        block_end = block_start + curr->data_size;
-        size += curr->data_size;
+        ft_putstrn("One block, code : ");
+        ft_putnbr(curr->code);
+        if (!(curr->free))
+        {
+            block_start = ((void*)curr + B_META_SIZE);
+            block_end = block_start + curr->data_size;
+            size += curr->data_size;
+            
+            len = get_len_conv((uintptr_t)block_start, 16);
+            print_memory((uintptr_t)block_start, 16, "0123456789ABCDEF", len);
+            ft_putstrn(" - ");
+            len = get_len_conv((uintptr_t)block_end, 16);
+            print_memory((uintptr_t)block_end, 16, "0123456789ABCDEF", len);
+            ft_putstrn(" : ");
+            ft_putnbrn(size);
+            ft_putstr(" octets");
+        }
         curr = curr->next;
-	    len = get_len_conv((uintptr_t)block_start, 16);
-        print_memory((uintptr_t)block_start, 16, "0123456789ABCDEF", len);
-        ft_putstrn(" - ");
-	    len = get_len_conv((uintptr_t)block_end, 16);
-        print_memory((uintptr_t)block_end, 16, "0123456789ABCDEF", len);
-        ft_putstrn(" : ");
-        ft_putnbrn(size);
-        ft_putstr(" octets");
     }
     return size;
 }

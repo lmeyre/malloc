@@ -32,7 +32,12 @@ t_block   *get_prev_block(t_block *block, t_heap *heap)
     {
       //ft_putstr("loop");
       if(first->next == block)
-        return block;
+      {
+        // ft_putstr("Found it, curr code and next code (one we return) : ");
+        // ft_putnbr(first->code);
+        // ft_putnbr(first->next->code);
+        return first;
+      }
         first = first->next;
     }
     return NULL;
@@ -44,7 +49,7 @@ t_heap   *get_prev_heap(t_heap *heap)
     while (first && first->next)
     {
       if(first->next == heap)
-        return heap;
+        return first;
         first = first->next;
     }
     return NULL;

@@ -31,21 +31,26 @@ void	clear_heap(t_heap *heap)
 	munmap(heap, heap->total_size);
 }
 
-void	clear_heap_end(t_heap *heap, t_block *block)
+void	clear_heap_end(t_heap *heap, t_block *block, int debug)
 {
 	t_block *prev;
 
-	if (block->next == NULL)
+	if (!block->free)
+		ft_putstr("WTFFFFF ??????????????????????");
+	if (block->next == NULL)// si on est sur le dernier block on peut le virer     a voir si on est pas dessus
 	{
+		if (debug == 1)
+			ft_putstr("Clearing heap end");
 		prev = get_prev_block(block, heap);
+		heap->free_size += B_META_SIZE + block->data_size;
 		if (prev != NULL)
 			prev->next = NULL;
-		heap->free_size += B_META_SIZE + block->data_size;
-		if (block == heap->first_block)
+		else if (block == heap->first_block)
 			heap->first_block = NULL;//We remove the first and last block
 	}
-	else if (block == heap->first_block)
-		heap->first_block = block->next;
+	// faut faire gaffe la c'est chelou car du coup le "start" se situe plus juste au debut de la heap mais apres la taille du block qu'on a virer  ~ problem ? on le fait pas du coup
+	// else if (block == heap->first_block)
+	// 	heap->first_block = block->next;
 }
 
 //voir si on l'enleve ca fait un peu cramer

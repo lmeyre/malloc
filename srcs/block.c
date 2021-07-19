@@ -14,7 +14,7 @@
 
 int g_code = 0;//to remove
 
-void try_fusion_block(t_block *block, t_heap *heap)
+t_block *try_fusion_block(t_block *block, t_heap *heap, int debug)
 {
     t_block *prev;
     t_block *next;
@@ -22,25 +22,30 @@ void try_fusion_block(t_block *block, t_heap *heap)
     prev = get_prev_block(block, heap);
     next = block->next;
     if(next == NULL)
-        ft_putstr("nul");
+        ft_putstr("Nul next");
     else
     {
-        ft_putstr("no");
+        ft_putstr("Next not null");
         if (next->free)
-            ft_putstr("ggggggg");
+            ft_putstr("Acceding next free info");
     }
-    ft_putstr("g");
+    ft_putstr("Middle");
     if (next != NULL && next->free)
     {
-        ft_putstr("g");
+        if (debug)
+            ft_putstr("Fusioning newly freed block with next one that is also free");
         block->next = next->next;
         block->data_size += B_META_SIZE + next->data_size;
     }
     if (prev != NULL && prev->free)
     {
+        if (debug)
+            ft_putstr("Fusioning newly freed block with prev one that is also free");
         prev->next = next;
         prev->data_size += B_META_SIZE + block->data_size;
+        return prev;
     }
+    return block;
 }
 
 void init_block(t_block *block, size_t size)
@@ -50,7 +55,8 @@ void init_block(t_block *block, size_t size)
     block->next = NULL;
     block->code = g_code;
     g_code += 1;
-    //ft_putnbr(g_code);
+    ft_putstrn("new block, code : ");
+    ft_putnbr(block->code);
 }
 
 void    add_block_heap(t_heap *heap, t_block *new_block, t_block* last_block)

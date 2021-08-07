@@ -95,6 +95,8 @@ static void test_malloc_free_size()
 
 void run_test_malloc(void)
 {
+    ft_putstrn("Page size : ");
+    ft_putnbr(getpagesize());
     test_malloc_null();
     test_malloc_one();
     ft_putstr("testing page size");

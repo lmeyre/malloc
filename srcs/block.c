@@ -21,15 +21,15 @@ t_block *try_fusion_block(t_block *block, t_heap *heap, int debug)
     
     prev = get_prev_block(block, heap);
     next = block->next;
-    if(next == NULL)
-        ft_putstr("Nul next");
-    else
-    {
-        ft_putstr("Next not null");
-        if (next->free)
-            ft_putstr("Acceding next free info");
-    }
-    ft_putstr("Middle");
+    // if(next == NULL)
+    //     ft_putstr("Nul next");
+    // else
+    // {
+    //     ft_putstr("Next not null");
+    //     if (next->free)
+    //         ft_putstr("Acceding next free info");
+    // }
+    // ft_putstr("Middle");
     if (next != NULL && next->free)
     {
         if (debug)
@@ -55,8 +55,8 @@ void init_block(t_block *block, size_t size)
     block->next = NULL;
     block->code = g_code;
     g_code += 1;
-    ft_putstrn("new block, code : ");
-    ft_putnbr(block->code);
+    //ft_putstrn("new block, code : ");
+    //ft_putnbr(block->code);
 }
 
 void    add_block_heap(t_heap *heap, t_block *new_block, t_block* last_block)

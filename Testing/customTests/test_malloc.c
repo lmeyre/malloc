@@ -57,29 +57,29 @@ static void test_malloc_limits()
     void	*t1	    = malloc(SMALL_BLOCK_SIZE);
     void	*t2	    = malloc(SMALL_BLOCK_SIZE + 1);
 
-    //printf("printf t0 (block apres meta) : %p\n", t0);
+    ////printf("printf t0 (block apres meta) : %p\n", t0);
 
-    // Should print mallocs in all categories (TINY, SMALL, LARGE)
-    show_alloc_mem();
-    //show_heap_list();
+    //// Should print mallocs in all categories (TINY, SMALL, LARGE)
+    //show_alloc_mem();
+    ////show_heap_list();
 
-    ft_putstr("FreeArea\nt");
+    //ft_putstr("\nFreeArea\nt");
     free(t0);
     
-    show_alloc_mem();
+    //show_alloc_mem();
 
     t0 = malloc(TINY_BLOCK_SIZE - sizeof(t_block));
     // show_alloc_mem();
-    ft_putstr("t0");
+    //ft_putstr("t0");
     free(t0);
-    show_alloc_mem();
-    ft_putstr("t00");
+    // show_alloc_mem();
+    // ft_putstr("t00");
     free(t00);
-    ft_putstr("t000");
+    //ft_putstr("t000");
     free(t000);
-    ft_putstr("t1");
+    //ft_putstr("t1");
     free(t1);
-    ft_putstr("t2");
+    //ft_putstr("t2");
     free(t2);
 }
 
@@ -95,10 +95,10 @@ static void test_malloc_free_size()
 
 void run_test_malloc(void)
 {
-    // test_malloc_null();
-    // test_malloc_one();
-    // ft_putstr("testing page size");
-    // test_malloc_getpagesize();
+    test_malloc_null();
+    test_malloc_one();
+    ft_putstr("testing page size");
+    test_malloc_getpagesize();
     ft_putstr("Testing limit");
     test_malloc_limits();
     ft_putstr("testing free size");

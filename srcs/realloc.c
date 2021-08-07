@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-void*realloc(void *ptr, size_t size)
+void    *realloc(void *ptr, size_t size)
 {
     t_block *block;
     t_heap  *heap;

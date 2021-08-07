@@ -31,6 +31,8 @@ void	clear_heap(t_heap *heap)
 	munmap(heap, heap->total_size);
 }
 
+//Si on free le premier block, et que yen a apres, on veut pas le mettre a null, on met juste la fin a null
+//si c'est le premier et le dernier, on peut le mettre a null
 void	clear_heap_end(t_heap *heap, t_block *block, int debug)
 {
 	t_block *prev;

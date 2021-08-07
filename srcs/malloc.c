@@ -83,7 +83,7 @@ void *search_free_heap(size_t size, t_data_type type, int debug)
 
 void* malloc(size_t size)
 {
-	static int debug = 1;
+	static int debug = 0;
 	void* ptr;
 	t_block	*block;
 	t_heap	*heap;

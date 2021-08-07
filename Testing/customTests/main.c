@@ -5,8 +5,8 @@ int main(void)
 	//pthread_t *thread = malloc(sizeof(pthread_t) * 100);
 
 	run_test_malloc();
-	// run_test_realloc();
-	// run_test_mixed();
+	run_test_realloc();
+	run_test_mixed();
 
 	// int i = 0;
 	// while (i < 100) {

@@ -33,7 +33,7 @@ void	clear_heap(t_heap *heap)
 
 //Si on free le premier block, et que yen a apres, on veut pas le mettre a null, on met juste la fin a null
 //si c'est le premier et le dernier, on peut le mettre a null
-void	clear_heap_end(t_heap *heap, t_block *block, int debug)
+void	clear_heap_end(t_heap *heap, t_block *block)
 {
 	t_block *prev;
 
@@ -41,8 +41,10 @@ void	clear_heap_end(t_heap *heap, t_block *block, int debug)
 		ft_putstr("WTFFFFF ??????????????????????");
 	if (block->next == NULL)// si on est sur le dernier block on peut le virer     a voir si on est pas dessus
 	{
-		if (debug == 1)
+		#ifdef DEBUG_FREE
+		//if (debug == 1)
 			ft_putstr("Clearing heap end");
+		#endif
 		prev = get_prev_block(block, heap);
 		heap->free_size += B_META_SIZE + block->data_size;
 		if (prev != NULL)

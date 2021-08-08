@@ -28,6 +28,10 @@ void	clear_heap(t_heap *heap)
 		t_heap **ref_first = first_origin();
 		*ref_first = next;
 	}
+	#ifdef DEBUG_FREE
+		ft_putstrn("Releasing memory amount = ");
+		ft_putnbr(heap->total_size);
+	#endif
 	munmap(heap, heap->total_size);
 }
 
@@ -92,6 +96,10 @@ t_heap	*create_heap(size_t size, t_data_type type)
 
 	// ft_putstrn("maping size : ");
 	// ft_putnbr(size);
+	#ifdef DEBUG_MALLOC
+		ft_putstrn("Allocating memory for heap = ");
+		ft_putnbr(size);
+	#endif
 	if ((new_heap = (t_heap*)mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == NULL)
 		return NULL;
 	ft_bzero(new_heap, sizeof(new_heap));

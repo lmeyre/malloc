@@ -1,0 +1,1 @@
+./run.sh /usr/bin/time -v ./test

@@ -1,18 +1,17 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <string.h>
-# include <sys/mman.h>
-# include <stdint.h>
-# include <sys/types.h>
- #include <sys/resource.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include "limits.h"
-//#include <windows.h> // to remove  
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <stdint.h>
+#include <sys/types.h>
+#include <sys/resource.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include "limits.h"
 
 typedef enum e_data_type
 {

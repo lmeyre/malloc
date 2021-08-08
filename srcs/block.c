@@ -66,6 +66,8 @@ void    add_block_heap(t_heap *heap, t_block *new_block, t_block* last_block)
     else
         heap->first_block = new_block;
 	heap->free_size -= B_META_SIZE + new_block->data_size;
+    // ft_putstrn("new free size = ");
+    // ft_putnbr(heap->free_size);
 }
 
 t_block	*create_block(t_heap *heap, size_t size, int debug)
@@ -85,8 +87,8 @@ t_block	*create_block(t_heap *heap, size_t size, int debug)
     else//Else we place it at last block pos + block meta data + block size
         new_block = (t_block*)(((void*)last_block + B_META_SIZE) + last_block->data_size);
     
-    add_block_heap(heap, new_block, last_block);
     init_block(new_block, size);
+    add_block_heap(heap, new_block, last_block);
     
 	//ft_putstr("Finished creating");
     return (new_block);

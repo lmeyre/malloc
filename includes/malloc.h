@@ -58,8 +58,8 @@ typedef struct s_heap
 
 #define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize()) 
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)  //128
-#define SMALL_HEAP_ALLOCATION_SIZE (32 * getpagesize())//ou 16 ? on avait mit 16 mais on a mit comme jterazz
-#define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128) // 512
+#define SMALL_HEAP_ALLOCATION_SIZE (32 * getpagesize())//ou 16 ? on avait mit 16 mais on a mit comme jterazz, 32 c'est mieux pour la corr car ca fait des block size de 1024
+#define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128) // 1024 -> on en rentre 128 max dans la heap)
 # define H_META_SIZE			sizeof(t_heap)
 # define B_META_SIZE			sizeof(t_block)
 

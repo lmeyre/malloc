@@ -88,6 +88,8 @@ t_heap	*create_heap(size_t size, t_data_type type)
 {
 	t_heap *new_heap;
 
+	// ft_putstrn("maping size : ");
+	// ft_putnbr(size);
 	if ((new_heap = (t_heap*)mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)) == NULL)
 		return NULL;
 	ft_bzero(new_heap, sizeof(new_heap));

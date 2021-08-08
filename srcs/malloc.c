@@ -89,13 +89,11 @@ void *search_free_heap(size_t size, t_data_type type)
 
 void* malloc(size_t size)
 {
-	//static int debug = 0;
 	void* ptr;
 	t_block	*block;
 	t_heap	*heap;
 
 	#ifdef DEBUG_MALLOC
-	//if (debug == 1)
 		ft_putstrn("\nStarting malloc of type ");// Useful to know if we use our malloc or real one
 	#endif
 	ptr = NULL;
@@ -117,7 +115,6 @@ void* malloc(size_t size)
 	if ((block = search_free_block(size, size_type)) != NULL)
 	{
 		#ifdef DEBUG_MALLOC
-		//if (debug == 1)
 			ft_putstr("Using existing empty block");
 		#endif
 		return (use_free_block(block, size));

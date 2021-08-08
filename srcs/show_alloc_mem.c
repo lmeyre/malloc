@@ -27,8 +27,8 @@ size_t    scan_blocks(t_heap *heap)
     
     while(curr)
     {
-        ft_putstrn("One block, code : ");
-        ft_putnbr(curr->code);
+        // ft_putstrn("One block, code : ");
+        // ft_putnbr(curr->code);
         if (!(curr->free))
         {
             block_start = ((void*)curr + B_META_SIZE);

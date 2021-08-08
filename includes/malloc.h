@@ -1,6 +1,14 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
+/*** Debug ***/
+#ifndef DEBUG_FREE
+#define DEBUG_FREE
+#endif
+#ifndef DEBUG_MALLOC
+#define DEBUG_MALLOC
+#endif
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -28,7 +36,7 @@ typedef struct s_block
     struct s_block* next;
     size_t          data_size;
     int             free;
-    int code;
+    //int code;
 } t_block;
 
 typedef struct s_heap
@@ -44,16 +52,6 @@ typedef struct s_heap
 
 //#define HEAP_SHIFT(start) ((void *)start + sizeof(t_heap))
 //#define BLOCK_SHIFT(start) ((void *)start + sizeof(t_block))
-
-//tmp coz windows sucks
-
-// #define TINY_HEAP_ALLOCATION_SIZE (4 * 4069)
-// #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
-// #define SMALL_HEAP_ALLOCATION_SIZE (16 * 4096)
-// #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
-// # define P_META_SIZE			sizeof(t_page)
-// # define B_META_SIZE			sizeof(t_block)
-
 
 #define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize()) 
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)  //128

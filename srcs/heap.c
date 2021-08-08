@@ -15,24 +15,25 @@
 void	clear_heap(t_heap *heap)
 {
 	t_heap *prev;
-	t_heap *next;
 
-	next = heap->next;
-	prev = get_prev_heap(heap);
-
-	//Ici c'est plsu simple que les blocks, on a pas a relier les espace vide, ce sont des heaps et pas des  block au sein d'une heap
-	if (prev != NULL)
-		prev->next = next;
+	//Ici c'est plsu simple que les blocks, on a pas a relier les espace vide, ce sont des heaps et pas des  block au sein d'une heap	
 	if (heap == first_heap())
 	{
 		t_heap **ref_first = first_origin();
-		*ref_first = next;
+		*ref_first = heap->next;
 	}
+	else
+	{
+		prev = get_prev_heap(heap);
+		if (prev != NULL)
+			prev->next = heap->next;
+	}
+
 	#ifdef DEBUG_FREE
 		ft_putstrn("Releasing memory amount = ");
 		ft_putnbr(heap->total_size);
 	#endif
-	munmap(heap, heap->total_size);
+	munmap((void*)heap, heap->total_size);
 }
 
 //Si on free le premier block, et que yen a apres, on veut pas le mettre a null, on met juste la fin a null
@@ -131,7 +132,12 @@ t_heap	*new_heap(size_t size, t_data_type type)
 	//ft_putstr("No avalaible heap, creating new one\n");
 	heap_size = get_heap_size(type, size);
 	if (heap_size > check_limit())
+	{
+		#ifdef DEBUG_MALLOC
+		ft_putstr("Limit reached, canceling malloc");
+		#endif
 		return (NULL);
+	}
 	if ((heap = create_heap(heap_size, type)) == NULL)
 		return NULL;
 	

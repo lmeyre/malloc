@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-int g_code = 0;//to remove
+//int g_code = 0;//to remove
 
 t_block *try_fusion_block(t_block *block, t_heap *heap)
 {
@@ -57,8 +57,8 @@ void init_block(t_block *block, size_t size)
     block->free = 0;
     block->data_size = size;
     block->next = NULL;
-    block->code = g_code;
-    g_code += 1;
+    // block->code = g_code;
+    // g_code += 1;
     //ft_putstrn("new block, code : ");
     //ft_putnbr(block->code);
 }
@@ -112,8 +112,8 @@ void    *use_free_block(t_block *block, size_t size)
     block->data_size = size;
     split->free = 1;
     block->free = 0;;
-    split->code = g_code;
-    g_code += 1;
+    // split->code = g_code;
+    // g_code += 1;
     // ft_putstr("Trying to create a new block of size : ");
     // ft_putnbr(size);
     // ft_putstr("So remaining block size is (+meta)");

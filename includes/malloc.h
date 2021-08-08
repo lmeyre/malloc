@@ -2,12 +2,12 @@
 #define MALLOC_H
 
 /*** Debug ***/
-#ifndef DEBUG_FREE
-#define DEBUG_FREE
-#endif
-#ifndef DEBUG_MALLOC
-#define DEBUG_MALLOC
-#endif
+// #ifndef DEBUG_FREE
+// #define DEBUG_FREE
+// #endif
+// #ifndef DEBUG_MALLOC
+// #define DEBUG_MALLOC
+// #endif
 
 #include <stdlib.h>
 #include <unistd.h>

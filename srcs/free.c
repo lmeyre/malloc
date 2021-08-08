@@ -78,7 +78,7 @@ void	find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_block *
 t_block    *empty_block(t_heap *heap, t_block *block, void *ptr)
 {
 	//bzero the ptr and not the block, so we only bzero what was stocked inside and not the meta
-	ft_bzero(ptr, block->data_size);// -> bzero nous detruit en page reclaim comprend pas pk, mais que sur le gros malloc, sur les 1024 * 1024 ca change rien 
+	//ft_bzero(ptr, block->data_size);// -> bzero nous detruit en page reclaim comprend pas pk, mais que sur le gros malloc, sur les 1024 * 1024 ca change rien 
 	block->free = 1;
 	//if the previous or next is also free, we make a big free block from 2
 	return (try_fusion_block(block, heap));

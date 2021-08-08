@@ -41,7 +41,7 @@ size_t    scan_blocks(t_heap *heap)
             len = get_len_conv((uintptr_t)block_end, 16);
             print_memory((uintptr_t)block_end, 16, "0123456789ABCDEF", len);
             ft_putstrn(" : ");
-            ft_putnbrn(size);
+            ft_putnbrn(curr->data_size);
             ft_putstr(" octets");
         }
         curr = curr->next;
@@ -49,30 +49,76 @@ size_t    scan_blocks(t_heap *heap)
     return size;
 }
 
+int    process_heap(t_heap *heap)
+{
+    size_t size;
+    int     len;
+
+    len = get_len_conv((uintptr_t)heap, 16);
+    if (heap->type == TINY)
+        ft_putstrn("TINY");
+    else if (heap->type == SMALL)
+        ft_putstrn("SMALL");
+    else
+        ft_putstrn("LARGE");
+    ft_putstrn(" : ");
+    print_memory((uintptr_t)heap, 16, "0123456789ABCDEF", len);
+    ft_putchar('\n');
+    size = scan_blocks(heap);
+
+    return size;
+}
+
+t_heap  *get_first_heap_memory(t_heap *last_heap)
+{
+    t_heap  *loop;
+    t_heap  *best;
+
+    best = NULL;
+    loop = first_heap();
+    // ft_putstrn("Starting, last heap addr :");
+    // ft_putnbr((uintptr_t)last_heap);
+    while(loop)
+    {
+        // ft_putstrn("loop, addr :");
+        // ft_putnbr((uintptr_t)loop);
+        if (last_heap == NULL)
+        {
+            if (best == NULL)
+                best = loop;
+            else if ((uintptr_t)loop < (uintptr_t)best)
+                best = loop;
+        }
+        else
+        {
+            if (best == NULL && (uintptr_t)loop > (uintptr_t)last_heap)
+                best = loop;
+            else if ((uintptr_t)loop < (uintptr_t)best && (uintptr_t)loop > (uintptr_t)last_heap)
+                best = loop;
+        }
+        loop = loop->next;
+    }
+    return best;
+}
+
 void	show_alloc_mem(void)
 {
     t_heap  *heap;
-    int     len;
     size_t size;
 
     heap = first_heap();
+    if (heap == NULL)
+    {
+        ft_putstr("Total : 0 octets");
+        return ;
+    }
     size = 0;
     ft_putstr("\n\n");
-    while(heap)
-    {
-	    len = get_len_conv((uintptr_t)heap, 16);
-        if (heap->type == TINY)
-		    ft_putstrn("TINY");
-        else if (heap->type == SMALL)
-            ft_putstrn("SMALL");
-        else
-            ft_putstrn("LARGE");
-        ft_putstrn(" : ");
-        print_memory((uintptr_t)heap, 16, "0123456789ABCDEF", len);
-        ft_putchar('\n');
-        size += scan_blocks(heap);
-        heap = heap->next;
-    }
+
+    heap = NULL;
+    while((heap = get_first_heap_memory(heap)) != NULL)
+        size += process_heap(heap);
+
     ft_putstrn("Total : ");
     ft_putnbrn(size);
     ft_putstr(" octets");

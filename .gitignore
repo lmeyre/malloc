@@ -1,6 +1,6 @@
-*.vscode
+.vscode
 a.out
 */*.o
-*libft
+*.so
 */*.bin
 

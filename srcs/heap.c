@@ -115,7 +115,6 @@ t_heap			*new_heap(size_t size, t_data_type type)
 	size_t heap_size;
 
 	heap_size = get_heap_size(type, size);
-	ft_putnbr(test_limit());
 	if (heap_size > test_limit())
 	{
 		#ifdef DEBUG_MALLOC

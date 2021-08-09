@@ -2,5 +2,5 @@
 a.out
 */*.o
 *.so
-*/*.bin
+Testing/correction/*.bin
 

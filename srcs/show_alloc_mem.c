@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-size_t    scan_blocks(t_heap *heap)
+size_t  scan_blocks(t_heap *heap)
 {
     void    *block_start;
     void    *block_end;
@@ -22,13 +22,8 @@ size_t    scan_blocks(t_heap *heap)
 
     curr = heap->first_block;
     size = 0;
-    //For blocks, we do as the exemple in subject and print avoiding the meta
-    //for heap it doesnt really matter since heap arent linked close one another
-    
     while(curr)
     {
-        // ft_putstrn("One block, code : ");
-        // ft_putnbr(curr->code);
         if (!(curr->free))
         {
             block_start = ((void*)curr + B_META_SIZE);
@@ -49,7 +44,7 @@ size_t    scan_blocks(t_heap *heap)
     return size;
 }
 
-int    process_heap(t_heap *heap)
+int     process_heap(t_heap *heap)
 {
     size_t size;
     int     len;
@@ -76,12 +71,8 @@ t_heap  *get_first_heap_memory(t_heap *last_heap)
 
     best = NULL;
     loop = first_heap();
-    // ft_putstrn("Starting, last heap addr :");
-    // ft_putnbr((uintptr_t)last_heap);
     while(loop)
     {
-        // ft_putstrn("loop, addr :");
-        // ft_putnbr((uintptr_t)loop);
         if (last_heap == NULL)
         {
             if (best == NULL)
@@ -101,7 +92,7 @@ t_heap  *get_first_heap_memory(t_heap *last_heap)
     return best;
 }
 
-void	show_alloc_mem(void)
+void    show_alloc_mem(void)
 {
     t_heap  *heap;
     size_t size;
@@ -113,12 +104,10 @@ void	show_alloc_mem(void)
         return ;
     }
     size = 0;
-    ft_putstr("\n\n");
-
+    ft_putstr("\n");
     heap = NULL;
     while((heap = get_first_heap_memory(heap)) != NULL)
         size += process_heap(heap);
-
     ft_putstrn("Total : ");
     ft_putnbrn(size);
     ft_putstr(" octets");

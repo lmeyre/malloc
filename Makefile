@@ -2,9 +2,9 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-COMPILER = clang #GCC
+COMPILER = clang
 
-FLAG = #-Wall -Werror -Wextra
+FLAG = -Wall -Werror -Wextra
 
 NAME = libft_malloc_$(HOSTTYPE).so
 
@@ -25,7 +25,6 @@ SRCS_NAME =	malloc.c \
 			free.c \
 			realloc.c \
 			show_alloc_mem.c \
-			#main.c # pas a compiler, le main sert a test la lib, la on compile la lib
 
 SRCS = $(addprefix $(SRCSDIR), $(SRCS_NAME))
 

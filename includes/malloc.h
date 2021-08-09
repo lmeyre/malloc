@@ -30,33 +30,25 @@ typedef enum e_data_type
 
 typedef struct s_block
 {
-    //struct s_block* prev;
-//could make a method to return prev block/heap to avoid stocking it and maximise space
-//en parler en corr ? -> a en parler
     struct s_block* next;
     size_t          data_size;
     int             free;
-    //int code;
 } t_block;
 
 typedef struct s_heap
 {
-    //struct s_heap*  prev;//meme comment que pour block prev
     struct s_heap*  next;
-    t_block*        first_block;// on pourrait l'enlever et acceder au ptr block en allant a heap + heap meta size, si on le fait en parler en correc
+    t_block*        first_block;
     size_t          total_size;
     size_t          free_size;
     t_data_type     type;
     int count;
 } t_heap;
 
-//#define HEAP_SHIFT(start) ((void *)start + sizeof(t_heap))
-//#define BLOCK_SHIFT(start) ((void *)start + sizeof(t_block))
-
 #define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize()) 
-#define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)  //128
-#define SMALL_HEAP_ALLOCATION_SIZE (32 * getpagesize())//ou 16 ? on avait mit 16 mais on a mit comme jterazz, 32 c'est mieux pour la corr car ca fait des block size de 1024
-#define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128) // 1024 -> on en rentre 128 max dans la heap)
+#define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128) //128
+#define SMALL_HEAP_ALLOCATION_SIZE (32 * getpagesize())
+#define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128) //1024
 # define H_META_SIZE			sizeof(t_heap)
 # define B_META_SIZE			sizeof(t_block)
 
@@ -71,7 +63,6 @@ void        find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_
 t_block     *try_fusion_block(t_block *block, t_heap *heap);
 void        clear_heap_end(t_heap *heap, t_block *block);
 void	    clear_heap(t_heap *heap);
-//void	*next_block_addr(t_heap *heap);
 void        *malloc(size_t size);
 void	    ft_putnbr(int n);
 void        ft_putnbrn(int n);
@@ -87,7 +78,5 @@ t_heap      *get_prev_heap(t_heap *heap);
 void        show_alloc_mem(void);
 void        print_memory(uintptr_t value, int base, char *base_str, int len);
 int         get_len_conv(uintptr_t value, int base);
-
-//void* search_free_block(size_t size);
 
 #endif

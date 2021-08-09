@@ -19,7 +19,6 @@ int		ready_to_clear(t_heap *heap)
 	first = first_heap();
 	while(first)
 	{
-		//Si on trouve une autre heap du meme type, on peut tej la notre
 		if (first->type == heap->type && first != heap)
 		{
 			return 1;
@@ -29,26 +28,6 @@ int		ready_to_clear(t_heap *heap)
 	return 0;
 }
 
-// void		clean_pages(t_pagetype pagetype)
-// {
-// 	t_page		*pages;
-// 	char		first;
-
-// 	first = 1;
-// 	pages = first_page();
-// 	while (pages)
-// 	{
-// 		if (pages->type == pagetype)
-// 		{
-// 			if (first)
-// 				first = 0;
-// 			else if (page_is_free(pages))
-// 				unmap_page(pages);
-// 		}
-// 		pages = pages->next;
-// 	}
-// }
-
 void	find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_block **target_block)
 {
 	t_block *block;
@@ -56,11 +35,9 @@ void	find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_block *
 	block = NULL;
 	while (current_heap)
 	{
-		//block = (t_block *)((void*)current_heap + H_META_SIZE);
 		block = current_heap->first_block;
 		while (block)
 		{
-            //on verifie pas le block, mais le block apres meta, car c'est ce qu'on a rendu via malloc
 			if (((void*)block + B_META_SIZE) == ptr)
 			{
 				*target_block = block;
@@ -75,21 +52,20 @@ void	find_block(void *ptr, t_heap *current_heap, t_heap **target_heap, t_block *
 	*target_heap = NULL;
 }
 
-t_block    *empty_block(t_heap *heap, t_block *block, void *ptr)
+t_block	*empty_block(t_heap *heap, t_block *block)
 {
-	//bzero the ptr and not the block, so we only bzero what was stocked inside and not the meta
-	//ft_bzero(ptr, block->data_size);// -> bzero nous detruit en page reclaim comprend pas pk, mais que sur le gros malloc, sur les 1024 * 1024 ca change rien 
+	//bzero the ptr and not the block, so we only bzero what was stocked inside and not the meta -> we wish to do it, but for unknow reason it greatly inecrease page reclaim count..
+	//ft_bzero(ptr, block->data_size);
 	block->free = 1;
-	//if the previous or next is also free, we make a big free block from 2
 	return (try_fusion_block(block, heap));
 }
 
-void    free(void* ptr)
+void	free(void* ptr)
 {
     t_heap *origin;
     t_heap *target_heap;
     t_block *target_block;
-	//static int debug = 0;
+
 	#ifdef DEBUG_FREE
 		ft_putstr("\nStarting free");
 	#endif
@@ -107,7 +83,7 @@ void    free(void* ptr)
 		#ifdef DEBUG_FREE
 			ft_putstr("Found it, trying to fusion free blocks");
 		#endif
-        target_block = empty_block(target_heap, target_block, ptr);
+        target_block = empty_block(target_heap, target_block);
 		clear_heap_end(target_heap, target_block);
 		if (target_heap->first_block == NULL)
 		{

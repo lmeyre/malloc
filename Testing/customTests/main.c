@@ -1,12 +1,22 @@
 #include "test.h"
+#include <stdio.h>
 
 int main(void)
 {
 	//pthread_t *thread = malloc(sizeof(pthread_t) * 100);
 
-	run_test_malloc();
-	run_test_realloc();
-	run_test_mixed();
+	//printf("SIZET = %zu\n", ((size_t)-1));
+	int i = 0;
+	while (i < 1)
+	{
+		malloc(30000000000);
+		i++;
+	}
+	ft_putstr("Done");
+	show_alloc_mem();
+	// run_test_malloc();
+	// run_test_realloc();
+	// run_test_mixed();
 
 	// int i = 0;
 	// while (i < 100) {
@@ -21,5 +31,5 @@ int main(void)
 	// 	i++;
 	// }
 	//
-	// run_test_rlimit(); // Always at the end
+	//run_test_rlimit(); // Always at the end
 }

@@ -2,12 +2,12 @@
 #define MALLOC_H
 
 /*** Debug ***/
-// #ifndef DEBUG_FREE
-// #define DEBUG_FREE
-// #endif
-// #ifndef DEBUG_MALLOC
-// #define DEBUG_MALLOC
-// #endif
+#ifndef DEBUG_FREE
+#define DEBUG_FREE
+#endif
+#ifndef DEBUG_MALLOC
+#define DEBUG_MALLOC
+#endif
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -64,8 +64,8 @@ t_block     *try_fusion_block(t_block *block, t_heap *heap);
 void        clear_heap_end(t_heap *heap, t_block *block);
 void	    clear_heap(t_heap *heap);
 void        *malloc(size_t size);
-void	    ft_putnbr(int n);
-void        ft_putnbrn(int n);
+void	    ft_putnbr(size_t n);
+void        ft_putnbrn(size_t n);
 void        ft_putchar(char c);
 void	    ft_putstr(char const *s);
 void        ft_putstrn(char const *s);

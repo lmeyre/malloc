@@ -44,7 +44,7 @@ size_t  scan_blocks(t_heap *heap)
     return size;
 }
 
-int     process_heap(t_heap *heap)
+size_t  process_heap(t_heap *heap)
 {
     size_t size;
     int     len;
@@ -107,7 +107,9 @@ void    show_alloc_mem(void)
     ft_putstr("\n");
     heap = NULL;
     while((heap = get_first_heap_memory(heap)) != NULL)
+    {
         size += process_heap(heap);
+    }
     ft_putstrn("Total : ");
     ft_putnbrn(size);
     ft_putstr(" octets");

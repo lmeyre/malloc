@@ -49,8 +49,9 @@ typedef struct s_heap
 #define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128) //128
 #define SMALL_HEAP_ALLOCATION_SIZE (32 * getpagesize())
 #define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128) //1024
-# define H_META_SIZE			sizeof(t_heap)
-# define B_META_SIZE			sizeof(t_block)
+#define H_META_SIZE			sizeof(t_heap)
+#define B_META_SIZE			sizeof(t_block)
+#define MAX_MALLOC_SIZE 1024 * 1024 * 256
 
 
 t_heap*     first_heap();

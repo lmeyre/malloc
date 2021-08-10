@@ -27,7 +27,7 @@ void			clear_heap(t_heap *heap)
 		if (prev != NULL)
 			prev->next = heap->next;
 	}
-	#ifdef DEBUG_FREE
+	#ifdef DEBUG_MALLOC
 		ft_putstrn("Releasing memory amount = ");
 		ft_putnbr(heap->total_size);
 	#endif
@@ -40,7 +40,7 @@ void			clear_heap_end(t_heap *heap, t_block *block)
 
 	if (block->next == NULL)
 	{
-		#ifdef DEBUG_FREE
+		#ifdef DEBUG_MALLOC
 			ft_putstr("Clearing heap end");
 		#endif
 		prev = get_prev_block(block, heap);

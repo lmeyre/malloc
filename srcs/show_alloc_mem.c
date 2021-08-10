@@ -12,6 +12,33 @@
 
 #include "../includes/malloc.h"
 
+void    dump_heap(t_heap *heap)
+{
+    size_t len;
+    size_t i;
+    int j;
+
+    i = 0;
+    len = heap->total_size + H_META_SIZE;
+    ft_putnbr(len);
+    ft_putnbr(H_META_SIZE);
+    ft_putnbr(heap->total_size);
+    while(i < len)
+    {
+        ft_itoa_base_str(((size_t)(heap + i)), 16, 0, 1);
+        ft_putstrn(" ~ ");
+        j = 0;
+        while (j < 16)
+        {
+            ft_itoa_base_str((unsigned char)(heap + i), 16, 2, 0);
+            ft_putchar(' ');
+            i++;
+            j++;
+        }
+        ft_putchar('\n');
+    }
+}
+
 size_t  scan_blocks(t_heap *heap)
 {
     void    *block_start;
@@ -44,7 +71,7 @@ size_t  scan_blocks(t_heap *heap)
     return size;
 }
 
-size_t  process_heap(t_heap *heap)
+size_t  process_heap(t_heap *heap, int hexa)
 {
     size_t size;
     int     len;
@@ -59,7 +86,13 @@ size_t  process_heap(t_heap *heap)
     ft_putstrn(" : ");
     print_memory((uintptr_t)heap, 16, "0123456789ABCDEF", len);
     ft_putchar('\n');
-    size = scan_blocks(heap);
+    if (hexa == 0)
+        size = scan_blocks(heap);
+    else
+    {
+        size = 0;
+        dump_heap(heap);
+    }
 
     return size;
 }
@@ -108,9 +141,27 @@ void    show_alloc_mem(void)
     heap = NULL;
     while((heap = get_first_heap_memory(heap)) != NULL)
     {
-        size += process_heap(heap);
+        size += process_heap(heap, 0);
     }
     ft_putstrn("Total : ");
     ft_putnbrn(size);
     ft_putstr(" octets");
+}
+
+void    show_alloc_mem_hex(void)
+{
+    t_heap  *heap;
+
+    heap = first_heap();
+    if (heap == NULL)
+    {
+        return ;
+    }
+    ft_putstr("\n");
+    heap = NULL;
+    while((heap = get_first_heap_memory(heap)) != NULL)
+    {
+        process_heap(heap, 1);
+        ft_putchar('\n');
+    }
 }

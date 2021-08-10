@@ -66,7 +66,7 @@ void	free(void* ptr)
     t_heap *target_heap;
     t_block *target_block;
 
-	#ifdef DEBUG_FREE
+	#ifdef DEBUG_MALLOC
 		ft_putstr("\nStarting free");
 	#endif
     if (ptr == NULL)
@@ -74,32 +74,32 @@ void	free(void* ptr)
     origin = first_heap();
     if (origin == NULL)
         return ;
-	#ifdef DEBUG_FREE
+	#ifdef DEBUG_MALLOC
 		ft_putstr("Looking for the pointer in the heaps and blocks");
 	#endif
     find_block(ptr, origin, &target_heap, &target_block);
     if (target_block != NULL)
 	{
-		#ifdef DEBUG_FREE
+		#ifdef DEBUG_MALLOC
 			ft_putstr("Found it, trying to fusion free blocks");
 		#endif
         target_block = empty_block(target_heap, target_block);
 		clear_heap_end(target_heap, target_block);
 		if (target_heap->first_block == NULL)
 		{
-			#ifdef DEBUG_FREE
+			#ifdef DEBUG_MALLOC
 				ft_putstr("Heap now empty, preparing to remove it if conditions are met");
 			#endif
 			if (ready_to_clear(target_heap) == 1)
 				clear_heap(target_heap);
 		}
-		#ifdef DEBUG_FREE
+		#ifdef DEBUG_MALLOC
 			ft_putstr("Done freeing");
 		#endif
 	}
     else 
 	{
-		#ifdef DEBUG_FREE
+		#ifdef DEBUG_MALLOC
         	ft_putstr("Found no block block corresponding to the malloc we are trying to free");
 		#endif
 	}

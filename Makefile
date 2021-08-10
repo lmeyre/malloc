@@ -34,6 +34,8 @@ BIN_NAME = $(SRCS_NAME:.c=.o)
 
 BIN = $(addprefix $(BINDIR), $(BIN_NAME))
 
+DEFINE = -DDEBUG_MALLOC
+
 .PHONY: all clean fclean re
 
 all : $(NAME)
@@ -44,7 +46,13 @@ $(NAME) : $(BIN)
 	@ar rc $(NAME) $(BIN)
  
 $(BINDIR)%.o: $(SRCSDIR)%.c
+ifeq ($(debugMalloc),1)
+	@echo "with debug"
+	@$(COMPILER) $(FLAG) $(DEFINE) -I INCLUDESDIR -o $@ -c $<
+else
+	@echo "without debug"
 	@$(COMPILER) $(FLAG) -I INCLUDESDIR -o $@ -c $<
+endif
 
 clean:
 	@echo "Cleaning Bins"

@@ -8,8 +8,6 @@ int	main(void)
 	i = 0;
 	while (i < 1024)
 	{
-		// ft_putstrn("i = ");
-		// ft_putnbr(i);
 		addr = (char*)malloc(1024);
 		addr[0] = 42;
 		i++;

@@ -134,3 +134,20 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	}
 	return (dst);
 }
+
+void	ft_itoa_base_str(size_t nb, char base, char length, int arg)
+{
+	char	*str;
+
+	str = "0123456789ABCDEFGHIJKLMNOPQRSTUIVWXYZ";
+	if (nb / base)
+		ft_itoa_base_str(nb / base, base, length - 1, arg);
+	else
+	{
+		if (arg == 1)
+			ft_putstrn("0x");
+		while (--length > 0)
+			ft_putstrn("0");
+	}
+	write(1, &str[nb % base], 1);
+}

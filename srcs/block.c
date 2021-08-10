@@ -21,7 +21,7 @@ t_block *try_fusion_block(t_block *block, t_heap *heap)
     next = block->next;
     if (next != NULL && next->free)
     {
-        #ifdef DEBUG_FREE
+        #ifdef DEBUG_MALLOC
             ft_putstr("Fusioning newly freed block with next one that is also free");
         #endif
         block->next = next->next;
@@ -29,7 +29,7 @@ t_block *try_fusion_block(t_block *block, t_heap *heap)
     }
     if (prev != NULL && prev->free)
     {
-        #ifdef DEBUG_FREE
+        #ifdef DEBUG_MALLOC
             ft_putstr("Fusioning newly freed block with prev one that is also free");
         #endif
         prev->next = next;

@@ -1,14 +1,6 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-/*** Debug ***/
-//#ifndef DEBUG_FREE
-//#define DEBUG_FREE
-//#endif
-//#ifndef DEBUG_MALLOC
-//#define DEBUG_MALLOC
-//#endif
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -71,12 +63,14 @@ void        ft_putchar(char c);
 void	    ft_putstr(char const *s);
 void        ft_putstrn(char const *s);
 void        *ft_memmove(void *dst, const void *src, size_t len);
+void        ft_itoa_base_str(size_t nb, char base, char length, int arg);
 void	    ft_bzero(void *s, size_t n);
 void        free(void *ptr);
 void        *realloc(void *ptr, size_t size);
 t_block     *get_prev_block(t_block *block, t_heap *heap);
 t_heap      *get_prev_heap(t_heap *heap);
 void        show_alloc_mem(void);
+void        show_alloc_mem_hex(void);
 void        print_memory(uintptr_t value, int base, char *base_str, int len);
 int         get_len_conv(uintptr_t value, int base);
 
